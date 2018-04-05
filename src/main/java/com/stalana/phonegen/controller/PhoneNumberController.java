@@ -1,10 +1,10 @@
 package com.stalana.phonegen.controller;
 
+import com.stalana.phonegen.model.PhoneNumberRequest;
 import com.stalana.phonegen.service.PhoneGenOperations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,12 +20,13 @@ public class PhoneNumberController {
 
     /**
      * Generate alphanumeric combinations based on the input phone number
-     * @param phoneNum
+     * @param phoneGenRequest phoneNumber and pagination results
      * @return
      */
-    @RequestMapping("/generate")
-    public List<String> generateAlphaNumerics (@RequestParam (name="phoneNumber") String phoneNum , @RequestParam(name="itemsPerPage") Integer numbersPerPage) {
-         svc.generateAlphaNumerics(phoneNum);
-         return svc.fetchAlphaNumericCombos(0,numbersPerPage );
+    @RequestMapping( value="/generate",method=RequestMethod.POST)
+    public List<String> generateAlphaNumerics (@RequestBody PhoneNumberRequest phoneGenRequest) {
+        svc.generateAlphaNumerics(phoneGenRequest.getPhoneNumber());
+        List<String> result = svc.fetchAlphaNumericCombos(0,phoneGenRequest.getNumberPerPage());
+        return result;
     }
 }
