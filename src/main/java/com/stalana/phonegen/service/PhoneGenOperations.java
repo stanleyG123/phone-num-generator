@@ -11,8 +11,9 @@ public interface PhoneGenOperations {
     /**
      * generates alphanumeric combinations for a given phone number
      * @param starterNumber phone number seed to use for generation
+     * @return total generated
      */
-    public void generateAlphaNumerics(String starterNumber);
+    public int generateAlphaNumerics(String starterNumber);
 
     /**
      * Fetches phone numbers per start and end pages

@@ -3,9 +3,7 @@ package com.stalana.phonegen.service;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Implementation of the phone number generator
@@ -15,28 +13,68 @@ import java.util.Random;
 public class PhoneGenOperationsImpl implements  PhoneGenOperations{
 
     private ThreadLocal<List<String>> myThreadLocal = new ThreadLocal<>();
+    private static final Map<Integer,String> keyToLetters= new LinkedHashMap<>();
 
+    static {
+        keyToLetters.put(0, "0");
+        keyToLetters.put(1, "1");
+        keyToLetters.put(2, "2ABC");
+        keyToLetters.put(3, "3DEF");
+        keyToLetters.put(4, "4GHI");
+        keyToLetters.put(5, "5JKL");
+        keyToLetters.put(6, "6MNO");
+        keyToLetters.put(7, "7PQRS");
+        keyToLetters.put(8, "8TUV");
+        keyToLetters.put(9, "9WXYZ");
+    }
+
+    /**
+     * Generates AlphaNumeric combos from a given phone number
+     * @param starterNumber phone number seed to use for generation
+     */
     @Override
-    public void generateAlphaNumerics(String starterNumber) {
+    public int generateAlphaNumerics(String starterNumber) {
         if (starterNumber != null && starterNumber.length() > 0){
-            List<String> nums = new ArrayList<>();
+            Set<String> noDups = new LinkedHashSet<>();
+            recur(noDups,starterNumber,starterNumber.length() - 1);
+            List<String> combos = new ArrayList<>();
+            combos.addAll(noDups);
+            myThreadLocal.set(combos);
+            return combos.size();
+        }
+        return - 1;
+    }
 
-            Random rand = new Random();
-            for (int i = 0 ; i < 1000; i ++) {
-                int num1 = (rand.nextInt(7) + 1) * 100 + (rand.nextInt(8) * 10) + rand.nextInt(8);
-                int num2 = rand.nextInt(743);
-                int num3 = rand.nextInt(10000);
+    // recursive compute combos
+    private static void recur (Collection<String> result,final String starter,int pointer) {
+        // base case we've gone through the whole phone num
+        if (pointer < 0){
+            return;
+        }else{
+            String chAt = "" + starter.charAt(pointer);
+            int phoneNumDigit = Integer.parseInt(chAt);
 
-                DecimalFormat df3 = new DecimalFormat("000"); // 3 zeros
-                DecimalFormat df4 = new DecimalFormat("0000"); // 4 zeros
+            // if not 0 or 1
+           // if (phoneNumDigit > 1){
+               String alts= keyToLetters.get(phoneNumDigit);
+               // loop through the combos, recomputing for each letter
+               for (String ch : alts.split("")){
+                   // make phone num
+                   String left = starter.substring(0,pointer );
+                   String right = starter.substring(pointer + 1,starter.length());
+                   String newStr = left + ch + right;
+                   result.add(newStr);
+                   recur (result,newStr, pointer - 1);
+               }
+               //
+//            }else{
+//                // 0 and 1 have no letters, ignore
+//                recur (result,starter, pointer - 1);
+//            }
 
-                String phoneNumber = df3.format(num1) + "-" + df3.format(num2) + "-" + df4.format(num3);
-                nums.add(phoneNumber);
-            }
-
-            myThreadLocal.set(nums);
         }
     }
+
 
     @Override
     public List<String> fetchAlphaNumericCombos(int start, int end) {

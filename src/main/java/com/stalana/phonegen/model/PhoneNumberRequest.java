@@ -1,6 +1,7 @@
 package com.stalana.phonegen.model;
 
 /**
+ * Bean to represent phone number request
  * Created by stan on 4/5/18.
  */
 public class PhoneNumberRequest {
