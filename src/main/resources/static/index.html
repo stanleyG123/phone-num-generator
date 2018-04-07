@@ -1,14 +1,5 @@
 <!DOCTYPE HTML>
 <html ng-app="phoneApp">
-<!--<head>-->
-    <!--<title>lpha Numeric Phone Number Generator</title>-->
-    <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>-->
-    <!--<link rel="stylesheet" href="vendor/css/bootstrap.css"/>-->
-    <!--<script src="vendor/js/angular.js"></script>-->
-    <!--<script src="vendor/js/angular-animate.js"></script>-->
-    <!--<script src="vendor/js/ui-bootstrap.js"></script>-->
-    <!--<script src="js/app.js"></script>-->
-<!--</head>-->
 
 <head>
     <title>Alpha Numeric Phone Number Generator</title>
@@ -18,9 +9,22 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/phoneApp.controller.js"></script>
+    <script src="js/phoneApp.service.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
+    <style>
+        table tr:nth-child(odd) td{
+            background:#63a0d4;
+        }
+        table tr:nth-child(even) td{
+            background:#fff;
+        }
+        table td {
+            padding:5px;
 
+        }
+    </style>
 </head>
 
 
@@ -30,19 +34,18 @@
 
 </div>
 
-<div class="container" ng-controller="phoneAppController"  style="width:70%">
+<div class="container" ng-controller="PhoneAppController"  style="width:70%">
 
     <div class="row" >
-        <span class="error" ng-show="phoneForm.input.$error.required">Required!</span><br>
+        <div style="border:1px;color:red" class="error" ng-show="phoneForm.phonenNumberInput.$error.phonenNumberInput">Invalid Phone Number</div><br>
 
         <form style="width: 50%;padding-left:15px" ng-submit="submit()" name="phoneForm" class="form-horizontal">
             <div class="form-group">
                 <label for="phoneNumber">Phone Number:</label>
-                <input type="tel"
+                <input type="text"
                        size="3"
                        ng-minlength="7"
-                       ng-maxlength="10"
-                       name="areaCode"
+                       name="phonenNumberInput"
                        placeholder="Phone Number"
                        ng-model="phoneInput"
                        ng-required="false"
@@ -51,13 +54,14 @@
         </form>
     </div>
     <div class="row" >
-        <button ng-click="submit()" ng-disabled="phoneForm.$invalid" class="btn btn-primary">Submit</button>
+        <button ng-click="submit()"  class="btn btn-primary">Submit</button>
         <button  ng-click="clear()" class="btn btn-primary">Clear</button>
-
     </div>
-    <div class="row" ng-show="showNumbers">
-        <div class="well">
-           <p> Total combinations: {{totalNumber}} </p>
+    <div class="row" ng-if="showNumbers">
+        <div style="width:50%;padding-top:10px">
+            <div  class="well">
+               <p> Total combinations: {{totalNumber}} </p>
+            </div>
         </div>
         <div>
             <ul uib-pagination
@@ -69,9 +73,16 @@
                 force-ellipses="true"
                 ng-change="pageChanged()"></ul>
             <ul class="example-animate-container">
-                <li class="animate-repeat" ng-repeat="num in phoneNumbers">
-                    {{num}}
-                </li>
+
+                <table style="tr:nth-of-type(odd){background-color:#ccc;}">
+
+                    <tr ng-repeat="num in phoneNumbers"><!-- repeat the rows -->
+                        <td>
+                            {{num}}
+                        </td>
+                    </tr>
+
+                </table>
             </ul>
         </div>
     </div>
