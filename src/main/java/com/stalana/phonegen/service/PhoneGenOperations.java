@@ -13,13 +13,15 @@ public interface PhoneGenOperations {
      * @param starterNumber phone number seed to use for generation
      * @return total generated
      */
-    public int generateAlphaNumerics(String starterNumber);
+    public List<String> generateAlphaNumerics(String starterNumber);
 
     /**
      * Fetches phone numbers per start and end pages
+     * @param allAlphaNumerics all combinations
      * @param start page start
      * @param end page end
      * @return list containing alphanumeric combos
      */
-    public List<String> fetchAlphaNumericCombos(int start, int end);
+    public List<String> fetchAlphaNumericCombos(List<String> allAlphaNumerics,
+                                                int start, int end);
 }

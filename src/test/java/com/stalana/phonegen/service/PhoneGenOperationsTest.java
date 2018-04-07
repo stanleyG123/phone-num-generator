@@ -19,24 +19,24 @@ public class PhoneGenOperationsTest {
     @Test
     public void generateAlphaNumericsTenDigitsTest(){
         int numOfCombos = 4 * 4 * 1 * 4 * 4 * 4 * 4 * 1 * 1 * 5;
-        int total = svc.generateAlphaNumerics("2403866109");
-        List<String> firstPage = svc.fetchAlphaNumericCombos(0,4);
-        Assert.assertEquals(numOfCombos,total);
-        List<String> resultList = Arrays.asList("2403866109","A403866109","B403866109","C403866109");
+        List<String> combos = svc.generateAlphaNumerics("2403866109");
+        List<String> firstPage = svc.fetchAlphaNumericCombos(combos,0,4);
+        Assert.assertEquals(numOfCombos,combos.size());
+        List<String> resultList = Arrays.asList("2403866109","240386610W","240386610X","240386610Y");
         Assert.assertArrayEquals(resultList.toArray(), firstPage.toArray());
     }
 
     @Test
     public void generateAlphaNumericsSevenDigitsTest(){
         int numOfCombos = 4 * 4 * 4 * 4 * 1 * 1 * 5;
-        int total = svc.generateAlphaNumerics("3866109");
-        Assert.assertEquals(numOfCombos,total);
+        List<String> combos = svc.generateAlphaNumerics("3866109");
+        Assert.assertEquals(numOfCombos,combos.size());
     }
 
     @Test
     public void generateAlphaNumericsAllZerosAndOnesTest(){
         int numOfCombos = 1;
-        int total = svc.generateAlphaNumerics("0110000");
-        Assert.assertEquals(numOfCombos,total);
+        List<String> combos= svc.generateAlphaNumerics("0110000");
+        Assert.assertEquals(numOfCombos,combos.size());
     }
 }
