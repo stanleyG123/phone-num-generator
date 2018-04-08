@@ -3,6 +3,7 @@ package com.stalana.phonegen.service;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class PhoneGenOperationsTest {
         List<String> combos = svc.generateAlphaNumerics("2403866109");
         List<String> firstPage = svc.fetchAlphaNumericCombos(combos,0,4);
         Assert.assertEquals(numOfCombos,combos.size());
-        List<String> resultList = Arrays.asList("2403866109","240386610W","240386610X","240386610Y");
+        List<String> resultList = Arrays.asList("2403866109","240386610W","240386610X","240386610Y","240386610Z");
         Assert.assertArrayEquals(resultList.toArray(), firstPage.toArray());
     }
 
@@ -30,6 +31,13 @@ public class PhoneGenOperationsTest {
     public void generateAlphaNumericsSevenDigitsTest(){
         int numOfCombos = 4 * 4 * 4 * 4 * 1 * 1 * 5;
         List<String> combos = svc.generateAlphaNumerics("3866109");
+        Assert.assertEquals(numOfCombos,combos.size());
+    }
+    @Test
+    @Ignore
+    public void generateAlphaNumericsAllNines(){
+        int numOfCombos = 5 * 5 * 5 * 5 * 5 * 5 * 5 * 5 * 5 * 5;
+        List<String> combos = svc.generateAlphaNumerics("9999999999");
         Assert.assertEquals(numOfCombos,combos.size());
     }
 

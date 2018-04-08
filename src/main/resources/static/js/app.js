@@ -3,5 +3,5 @@
  */
 (function(){
     'use strict';
-    angular.module('phoneApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+    angular.module('phoneApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngToast']);
 })();

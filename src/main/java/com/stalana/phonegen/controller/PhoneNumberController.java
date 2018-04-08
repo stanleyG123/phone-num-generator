@@ -1,11 +1,9 @@
 package com.stalana.phonegen.controller;
 
-import com.stalana.phonegen.model.PhoneNumberPageRequest;
 import com.stalana.phonegen.model.PhoneNumberRequest;
 import com.stalana.phonegen.model.PhoneNumberResponse;
 import com.stalana.phonegen.service.PhoneGenOperations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,19 +30,26 @@ public class PhoneNumberController {
     @RequestMapping(value = "/generate", method = RequestMethod.POST)
     public PhoneNumberResponse generateAlphaNumerics(@RequestBody PhoneNumberRequest phoneGenRequest,
                                                      HttpServletRequest request) {
+        validatePhoneNumber(phoneGenRequest.getPhoneNumber());
         List<String> allCombos = svc.generateAlphaNumerics(phoneGenRequest.getPhoneNumber());
-        System.out.println("size" + allCombos.size());
-        for (String s : allCombos){
-            System.out.println(s);
-        }
         request.getSession().setAttribute(ALL_COMBOS, allCombos);
-        List<String> page = svc.fetchAlphaNumericCombos(allCombos, FIRST_PAGE_START, phoneGenRequest.getNumberPerPage());
+        List<String> page = svc.fetchAlphaNumericCombos(allCombos, FIRST_PAGE_START, phoneGenRequest.getNumberPerPage() - 1);
         PhoneNumberResponse response = new PhoneNumberResponse();
         response.setCombos(page);
         response.setPageStart(FIRST_PAGE_START);
-        response.setPageEnd(phoneGenRequest.getNumberPerPage());
+        response.setPageEnd(phoneGenRequest.getNumberPerPage() - 1);
         response.setNumberOfCombos(allCombos.size());
         return response;
+
+    }
+
+    protected void validatePhoneNumber(String phoneNumber){
+        if (phoneNumber == null
+                || phoneNumber.length() == 0
+                || (phoneNumber.length() != 7 && phoneNumber.length() != 10 )
+                || !phoneNumber.chars().allMatch( Character::isDigit )){
+            throw new IllegalArgumentException(" Bad phone number. Expecting a number either 7 or 10 digits");
+        }
     }
 
     /**
@@ -58,7 +63,11 @@ public class PhoneNumberController {
                                          @RequestParam(value = "pageEnd") Integer pageEnd,
                                          HttpServletRequest request) {
         List<String> combos = (List<String>) request.getSession().getAttribute(ALL_COMBOS);
+        if (pageStart < 0 || pageEnd >= combos.size()){
+            throw new IllegalArgumentException("Unable to fetch combos, out of bounds");
+        }
         List<String> page = svc.fetchAlphaNumericCombos(combos, pageStart, pageEnd);
+
         PhoneNumberResponse response = new PhoneNumberResponse();
         response.setCombos(page);
         response.setPageStart(pageStart);

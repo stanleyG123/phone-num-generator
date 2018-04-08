@@ -68,7 +68,11 @@ public class PhoneGenOperationsImpl implements  PhoneGenOperations{
     public List<String> fetchAlphaNumericCombos(List<String> allAlphaNumerics, int start, int end) {
         List<String> page = new ArrayList<>();
         if (allAlphaNumerics != null && allAlphaNumerics.size() > 0){
-            page = allAlphaNumerics.subList(start, end);
+            if(end > allAlphaNumerics.size()){
+                end = allAlphaNumerics.size();
+            }
+            // because end of sublist is exlusive,  add 1 to get the last element
+            page = allAlphaNumerics.subList(start, end + 1);
         }else{
             throw new IllegalStateException(" Unable to retrieve alphanumeric numbers, the generated  list is empty");
         }

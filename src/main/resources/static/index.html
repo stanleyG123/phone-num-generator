@@ -8,10 +8,13 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script src="/vendor/js/ngToast.js"></script>
     <script src="js/app.js"></script>
     <script src="js/phoneApp.controller.js"></script>
     <script src="js/phoneApp.service.js"></script>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/css/ngToast.css" rel="stylesheet">
+    <link href="/vendor/css/ngToast-animations.css" rel="stylesheet">
 
     <style>
         table tr:nth-child(odd) td{
@@ -30,14 +33,14 @@
 
 <body>
 <div class="jumbotron text-center">
-    <H1>Alpha Numeric Phone Number Generator</H1>
+    <H1>Alpha-Numeric Phone Number Generator</H1>
 
 </div>
 
-<div class="container" ng-controller="PhoneAppController"  style="width:70%">
+<div class="container" ng-controller="PhoneAppController as ph"  style="width:70%">
 
     <div class="row" >
-        <div style="border:1px;color:red" class="error" ng-show="phoneForm.phonenNumberInput.$error.phonenNumberInput">Invalid Phone Number</div><br>
+        <div style="border:1px;color:red" class="error" ng-show="phoneForm.phonenNumberInput.$invalid">Invalid Phone Number</div><br>
 
         <form style="width: 50%;padding-left:15px" ng-submit="submit()" name="phoneForm" class="form-horizontal">
             <div class="form-group">
@@ -47,36 +50,36 @@
                        ng-minlength="7"
                        name="phonenNumberInput"
                        placeholder="Phone Number"
-                       ng-model="phoneInput"
+                       ng-model="ph.phoneInput"
                        ng-required="false"
                        class="form-control" id="phoneNumber">
             </div>
         </form>
     </div>
     <div class="row" >
-        <button ng-click="submit()"  class="btn btn-primary">Submit</button>
-        <button  ng-click="clear()" class="btn btn-primary">Clear</button>
+        <button ng-click="ph.submit()"  class="btn btn-primary">Submit</button>
+        <button  ng-click="ph.clear()" class="btn btn-primary">Clear</button>
     </div>
-    <div class="row" ng-if="showNumbers">
+    <div class="row" ng-if="ph.showNumbers">
         <div style="width:50%;padding-top:10px">
             <div  class="well">
-               <p> Total combinations: {{totalNumber}} </p>
+               <p> Total combinations: {{ph.totalNumber}} </p>
             </div>
         </div>
         <div>
             <ul uib-pagination
-                total-items="totalNumber"
-                ng-model="currentPage"
+                total-items="ph.totalNumber"
+                ng-model="ph.viewPage"
                 boundary-links="true"
                 max-size="10"
                 rotate="true"
                 force-ellipses="true"
-                ng-change="pageChanged()"></ul>
+                ng-change="ph.pageChanged()"></ul>
             <ul class="example-animate-container">
 
                 <table style="tr:nth-of-type(odd){background-color:#ccc;}">
 
-                    <tr ng-repeat="num in phoneNumbers"><!-- repeat the rows -->
+                    <tr ng-repeat="num in ph.phoneNumbers"><!-- repeat the rows -->
                         <td>
                             {{num}}
                         </td>

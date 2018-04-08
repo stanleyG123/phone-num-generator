@@ -10,8 +10,7 @@ public class PhoneNumberResponse {
     private Integer numberOfCombos;
     // combinations in a current page
     private List<String> combos;
-    // optional message
-    private String message;
+
     //current page start
     private Integer pageStart;
     //current page end
@@ -47,13 +46,5 @@ public class PhoneNumberResponse {
 
     public void setCombos(List<String> combos) {
         this.combos = combos;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
