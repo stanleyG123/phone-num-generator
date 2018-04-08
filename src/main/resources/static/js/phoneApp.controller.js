@@ -29,12 +29,8 @@
           PhoneDataSvc.fetch(start,end).then(function(response){
               cur.phoneNumbers = response.data.combos;
           }, function (){
-              //todo: pop a ngToast
-              //ngToast.create('Error while fetching alpha numeric combinations');
-
-              ngToast.create({
-                  className: 'warning',
-                  content: '<a href="#" class="">a message</a>'
+              ngToast.danger({
+                  content: '<p>Error while fetching page</p>'
               });
               console.log("error while fetching pages")
           });
@@ -50,11 +46,14 @@
                   cur.showNumbers = true;
                   cur.totalNumber = response.data.numberOfCombos;
               }, function () {
-                  ngToast.create('Error while generating alpha numeric combinations');
-                  console.log("error while generating alphanumerics")
+                  ngToast.danger({
+                      content: '<p>Error while generating alpha-numeric combinations</p>'
+                  });
+                  console.log("Error while generating alpha-numeric combinations")
               });
           }else{
-              ngToast.create('Invalid Number , please fix');
+              ngToast.danger('Bad phone number. A telephone number should be either 7 or 10 digits.');
+              console.log('Bad phone number. The telephone number should be either 7 or 10 digits.')
               $scope.phoneForm.phonenNumberInput.$setValidity("phonenNumberInput", false);
           }
       }

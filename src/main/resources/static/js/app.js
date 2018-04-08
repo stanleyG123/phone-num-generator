@@ -3,5 +3,16 @@
  */
 (function(){
     'use strict';
-    angular.module('phoneApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngToast']);
+    let app = angular.module('phoneApp', ['ngAnimate', 'ngSanitize', 'ui.bootstrap','ngToast']);
+
+    app.config(ngToastConfig);
+    ngToastConfig.$inject = ['ngToastProvider'];
+
+    function ngToastConfig(ngToastProvider){
+        ngToastProvider.configure({
+           animation:'slide',
+           combineDuplications:true,
+           maxNumber:20
+        });
+    }
 })();
