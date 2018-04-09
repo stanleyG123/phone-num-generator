@@ -63,7 +63,7 @@ public class PhoneNumberController {
                                          @RequestParam(value = "pageEnd") Integer pageEnd,
                                          HttpServletRequest request) {
         List<String> combos = (List<String>) request.getSession().getAttribute(ALL_COMBOS);
-        if (pageStart < 0 || pageEnd >= combos.size()){
+        if (pageStart < 0 ){
             throw new IllegalArgumentException("Unable to fetch combos, out of bounds");
         }
         List<String> page = svc.fetchAlphaNumericCombos(combos, pageStart, pageEnd);

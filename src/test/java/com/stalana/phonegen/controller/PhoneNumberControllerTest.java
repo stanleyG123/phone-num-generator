@@ -101,7 +101,7 @@ public class PhoneNumberControllerTest {
 
     @Test
     public void fetchPageTest_outOfBounds() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/fetchPage?pageEnd=9&pageStart=0")
+        mockMvc.perform(MockMvcRequestBuilders.get("/fetchPage?pageEnd=2&pageStart=-1")
                 .sessionAttr("all_combos", combos)
                 .contentType(contentType))
                 .andExpect(status().isInternalServerError());

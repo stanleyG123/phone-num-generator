@@ -69,7 +69,7 @@ public class PhoneGenOperationsImpl implements  PhoneGenOperations{
         List<String> page = new ArrayList<>();
         if (allAlphaNumerics != null && allAlphaNumerics.size() > 0){
             if(end > allAlphaNumerics.size()){
-                end = allAlphaNumerics.size();
+                end = allAlphaNumerics.size() - 1;
             }
             // because end of sublist is exlusive,  add 1 to get the last element
             page = allAlphaNumerics.subList(start, end + 1);
