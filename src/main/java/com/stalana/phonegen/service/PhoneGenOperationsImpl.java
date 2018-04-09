@@ -44,7 +44,7 @@ public class PhoneGenOperationsImpl implements  PhoneGenOperations{
     }
 
     // recursive compute combos
-    private static void recur (Collection<String> result,final String starter,int pointer) {
+    private void recur (Collection<String> result,final String starter,int pointer) {
         // base case we've gone through the whole phone num
         if (pointer >= starter.length()){
             return;
